@@ -1,6 +1,6 @@
 /*Компонент для отрисовки главной страницы*/
 
-import Main from "../../pages/main/main";
+import Main from '../../pages/main/main';
 
 type AppProps = {
   offersCount: number;
@@ -8,7 +8,7 @@ type AppProps = {
 
 function App({offersCount}: AppProps): JSX.Element {
   return (
-  <Main offersCount={offersCount}/>
+    <Main offersCount={offersCount}/>
   );
 }
 

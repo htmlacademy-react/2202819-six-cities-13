@@ -1,6 +1,6 @@
 /*Компонент главной страницы*/
 
-import OfferCard from "../../components/offer-card/offer-card";
+import OfferCard from '../../components/offer-card/offer-card';
 
 type MainProps = {
   offersCount: number;
@@ -110,7 +110,7 @@ function Main({offersCount}: MainProps): JSX.Element {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
 export default Main;

@@ -167,7 +167,7 @@ function Favorites(): JSX.Element {
         </a>
       </footer>
     </div>
-  )
+  );
 }
 
 export default Favorites;
