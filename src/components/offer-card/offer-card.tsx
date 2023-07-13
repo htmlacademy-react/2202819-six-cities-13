@@ -1,5 +1,3 @@
-/*Компонент для отображения одной карточки*/
-
 function OfferCard(): JSX.Element {
   return (
     <article className="cities__card place-card">
