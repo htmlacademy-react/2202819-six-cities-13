@@ -1,11 +1,13 @@
+import {Offer} from '../../types/offer-types';
 import HeaderFull from '../../components/header/header-full';
-import OfferCard from '../../components/offer-card/offer-card';
+import OffersList from '../../components/offers-list/offers-list';
 
 type MainProps = {
   offersCount: number;
+  offers: Offer[];
 }
 
-function Main({offersCount}: MainProps): JSX.Element {
+function MainPage({offersCount, offers}: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <HeaderFull/>
@@ -67,12 +69,7 @@ function Main({offersCount}: MainProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <OfferCard/>;
-                <OfferCard/>;
-                <OfferCard/>;
-                <OfferCard/>;
-              </div>
+              <OffersList offers={offers}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
@@ -84,4 +81,4 @@ function Main({offersCount}: MainProps): JSX.Element {
   );
 }
 
-export default Main;
+export default MainPage;
