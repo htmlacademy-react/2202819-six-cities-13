@@ -1,13 +1,26 @@
-import {Offer} from '../../types/offer-types';
+import {useState} from 'react';
+import {City, Offer} from '../../types/offer-types';
 import HeaderFull from '../../components/header/header-full';
 import OffersList from '../../components/offers-list/offers-list';
+import Map from '../../components/map/map';
 
 type MainProps = {
   offersCount: number;
+  city: City;
   offers: Offer[];
 }
 
-function MainPage({offersCount, offers}: MainProps): JSX.Element {
+function MainPage({offersCount, city, offers}: MainProps): JSX.Element {
+  const [selectedPoint, setSelectedPoint] = useState<Offer | undefined>(
+    undefined
+  );
+
+  const handleListItemHover = (id: string) => {
+    const currentPoint = offers.find((offer) => offer.id === id);
+
+    setSelectedPoint(currentPoint);
+  };
+
   return (
     <div className="page page--gray page--main">
       <HeaderFull/>
@@ -69,10 +82,14 @@ function MainPage({offersCount, offers}: MainProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <OffersList offers={offers}/>
+              <OffersList offers={offers} onListItemHover={handleListItemHover}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map
+                city={city}
+                points={offers}
+                selectedPoint={selectedPoint}
+              />
             </div>
           </div>
         </div>
