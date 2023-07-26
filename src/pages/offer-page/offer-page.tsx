@@ -2,7 +2,7 @@ import {useParams} from 'react-router-dom';
 import {Review} from '../../types/review-types';
 import {DetailedOffer} from '../../types/offer-types';
 import HeaderFull from '../../components/header/header-full';
-import CommentSendForm from '../../components/comment-form/comment-form';
+import ReviewSendForm from '../../components/review-form/review-form';
 
 type OfferProps = {
   detailedOffers: DetailedOffer[];
@@ -10,8 +10,8 @@ type OfferProps = {
 }
 
 function OfferPage({detailedOffers, reviews}: OfferProps): JSX.Element | null {
-  const params = useParams();
-  const detailedOffer = detailedOffers.find((elem) => elem.id === params.id);
+  const {id} = useParams();
+  const detailedOffer = detailedOffers.find((elem) => elem.id === id);
 
   if (!detailedOffer){
     return null;
@@ -125,7 +125,7 @@ function OfferPage({detailedOffers, reviews}: OfferProps): JSX.Element | null {
                     </li>
                   ))}
                 </ul>
-                <CommentSendForm/>
+                <ReviewSendForm/>
               </section>
             </div>
           </div>

@@ -1,20 +1,19 @@
-import {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import {Offer} from '../../types/offer-types';
 
 type OfferCardProps = {
   offer: Offer;
+  handleOfferCardHover: () => void;
 }
 
-function OfferCard({offer}: OfferCardProps): JSX.Element {
+function OfferCard(props: OfferCardProps): JSX.Element {
+  const {offer, handleOfferCardHover} = props;
   const {id, title, type, price, previewImage, isFavorite, isPremium, rating} = offer;
-  const [isHovered, setHoveredCard] = useState(false);
 
   return (
     <article className="cities__card place-card"
-      onMouseEnter={() => setHoveredCard(isHovered)}
-      onMouseLeave={() => setHoveredCard(!isHovered)}
+      onMouseEnter={handleOfferCardHover}
     >
       {isPremium &&
         <div className="place-card__mark">

@@ -1,6 +1,6 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import {Offer, DetailedOffer} from '../../types/offer-types';
+import {City, Offer, DetailedOffer} from '../../types/offer-types';
 import {Review} from '../../types/review-types';
 import MainPage from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
@@ -11,12 +11,13 @@ import PrivateRoute from '../private-route/private-route';
 
 type AppProps = {
   offersCount: number;
+  city: City;
   offers: Offer[];
   detailedOffers: DetailedOffer[];
   reviews: Review[];
 }
 
-function App({offersCount, offers, detailedOffers, reviews}: AppProps): JSX.Element {
+function App({offersCount, city, offers, detailedOffers, reviews}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
@@ -25,6 +26,7 @@ function App({offersCount, offers, detailedOffers, reviews}: AppProps): JSX.Elem
           element={
             <MainPage
               offersCount={offersCount}
+              city={city}
               offers={offers}
             />
           }
