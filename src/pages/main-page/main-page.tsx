@@ -15,7 +15,11 @@ function MainPage({offersCount, city, offers}: MainProps): JSX.Element {
     undefined
   );
 
-  const handleListItemHover = (id: string) => {
+  const handleOfferCardHover = (id: string | undefined) => {
+    if (!id) {
+      setSelectedPoint(undefined);
+    }
+
     const currentPoint = offers.find((offer) => offer.id === id);
 
     setSelectedPoint(currentPoint);
@@ -82,14 +86,12 @@ function MainPage({offersCount, city, offers}: MainProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <OffersList offers={offers} onListItemHover={handleListItemHover}/>
+              <OffersList type='cities' offers={offers} onOfferCardHover={handleOfferCardHover}/>
             </section>
             <div className="cities__right-section">
-              <Map
-                city={city}
-                points={offers}
-                selectedPoint={selectedPoint}
-              />
+              <section className="cities__map map">
+                <Map city={city} points={offers} selectedPoint={selectedPoint} />
+              </section>
             </div>
           </div>
         </div>
