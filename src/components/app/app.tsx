@@ -1,3 +1,4 @@
+import {HelmetProvider} from 'react-helmet-async';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {City, Offer, DetailedOffer} from '../../types/offer-types';
@@ -19,40 +20,42 @@ type AppProps = {
 
 function App({offersCount, city, offers, detailedOffers, reviews}: AppProps): JSX.Element {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path={AppRoute.Main}
-          element={
-            <MainPage
-              offersCount={offersCount}
-              city={city}
-              offers={offers}
-            />
-          }
-        />
-        <Route
-          path={AppRoute.Login}
-          element={<LoginPage />}
-        />
-        <Route
-          path={`${AppRoute.Offer}/:id`}
-          element={<OfferPage detailedOffers={detailedOffers} reviews={reviews}/>}
-        />
-        <Route
-          path={AppRoute.Favorites}
-          element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-              <FavoritesPage offers={offers}/>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="*"
-          element={<NotFoundPage />}
-        />
-      </Routes>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path={AppRoute.Main}
+            element={
+              <MainPage
+                offersCount={offersCount}
+                city={city}
+                offers={offers}
+              />
+            }
+          />
+          <Route
+            path={AppRoute.Login}
+            element={<LoginPage />}
+          />
+          <Route
+            path={`${AppRoute.Offer}/:id`}
+            element={<OfferPage city={city} offers={offers} detailedOffers={detailedOffers} reviews={reviews}/>}
+          />
+          <Route
+            path={AppRoute.Favorites}
+            element={
+              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+                <FavoritesPage offers={offers}/>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="*"
+            element={<NotFoundPage />}
+          />
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 

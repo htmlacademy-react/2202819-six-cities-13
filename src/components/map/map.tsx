@@ -39,7 +39,7 @@ function Map({city, points, selectedPoint}: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.id === selectedPoint.id
+            selectedPoint && point.id === selectedPoint.id
               ? currentCustomIcon
               : defaultCustomIcon
           )
@@ -53,10 +53,7 @@ function Map({city, points, selectedPoint}: MapProps): JSX.Element {
   }, [map, points, selectedPoint]);
 
   return (
-    <section
-      ref={mapRef}
-      className="cities__map map"
-    />
+    <div style={{height: '100%', width: '100%'}} ref={mapRef}></div>
   );
 }
 
