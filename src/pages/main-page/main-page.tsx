@@ -1,16 +1,20 @@
 import {useState} from 'react';
+import {useAppSelector} from '../../hooks';
+import {Cities} from '../../const';
 import {City, Offer} from '../../types/offer-types';
 import HeaderFull from '../../components/header/header-full';
+import CitiesList from '../../components/cities-list/cities-list';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 
 type MainProps = {
-  offersCount: number;
   city: City;
-  offers: Offer[];
 }
 
-function MainPage({offersCount, city, offers}: MainProps): JSX.Element {
+function MainPage({city}: MainProps): JSX.Element {
+  const activeCity = useAppSelector((state) => state.city);
+  const sortOffers = useAppSelector((state) => state.sortOffers);
+
   const [selectedPoint, setSelectedPoint] = useState<Offer | undefined>(
     undefined
   );
@@ -20,7 +24,7 @@ function MainPage({offersCount, city, offers}: MainProps): JSX.Element {
       setSelectedPoint(undefined);
     }
 
-    const currentPoint = offers.find((offer) => offer.id === id);
+    const currentPoint = sortOffers.find((offer) => offer.id === id);
 
     setSelectedPoint(currentPoint);
   };
@@ -32,45 +36,17 @@ function MainPage({offersCount, city, offers}: MainProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <CitiesList
+              cities={Cities}
+              activeCity={activeCity}
+            />
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{sortOffers.length} places to stay in {activeCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -86,11 +62,11 @@ function MainPage({offersCount, city, offers}: MainProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <OffersList type='cities' offers={offers} onOfferCardHover={handleOfferCardHover}/>
+              <OffersList type='cities' offers={sortOffers} onOfferCardHover={handleOfferCardHover}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={city} points={offers} selectedPoint={selectedPoint} />
+                <Map city={city} points={sortOffers} selectedPoint={selectedPoint} />
               </section>
             </div>
           </div>

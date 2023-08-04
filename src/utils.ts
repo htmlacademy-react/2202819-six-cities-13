@@ -23,4 +23,4 @@ const getFormatDate = (date: string): string => {
 
 const getDateTime = (date: string): string => date.split('T')[0];
 
-export { getFormatDate, getDateTime };
+export {getFormatDate, getDateTime};

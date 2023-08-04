@@ -1,7 +1,8 @@
 import {HelmetProvider} from 'react-helmet-async';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {useAppSelector} from '../../hooks';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import {City, Offer, DetailedOffer} from '../../types/offer-types';
+import {City, DetailedOffer} from '../../types/offer-types';
 import {Review} from '../../types/review-types';
 import MainPage from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
@@ -11,14 +12,14 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 
 type AppProps = {
-  offersCount: number;
   city: City;
-  offers: Offer[];
   detailedOffers: DetailedOffer[];
   reviews: Review[];
 }
 
-function App({offersCount, city, offers, detailedOffers, reviews}: AppProps): JSX.Element {
+function App({city, detailedOffers, reviews}: AppProps): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -27,9 +28,7 @@ function App({offersCount, city, offers, detailedOffers, reviews}: AppProps): JS
             path={AppRoute.Main}
             element={
               <MainPage
-                offersCount={offersCount}
                 city={city}
-                offers={offers}
               />
             }
           />
