@@ -1,7 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {CityMap} from '../const';
-import {Offer, City} from '../types/offer-types';
-import {changeCity, getSortedOffers, getFilteredOffers, loadOffers, offersLoadingStatus} from '../store/action';
+import {AuthorizationStatus, CityMap} from '../const';
+import {City, Offer} from '../types/offer-types';
+import {changeCity, getSortedOffers, getFilteredOffers, loadOffers, getoffersLoadingStatus, requireAuthorization} from '../store/action';
 
 type InitialState = {
   city: City;
@@ -9,6 +9,7 @@ type InitialState = {
   sortOffers: Offer[];
   filterOffers: Offer[];
   loadingStatus: boolean;
+  authorizationStatus: AuthorizationStatus;
 }
 
 const initialState: InitialState = {
@@ -17,6 +18,7 @@ const initialState: InitialState = {
   sortOffers: [],
   filterOffers: [],
   loadingStatus: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -45,8 +47,11 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
     })
-    .addCase(offersLoadingStatus, (state, action) => {
+    .addCase(getoffersLoadingStatus, (state, action) => {
       state.loadingStatus = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 

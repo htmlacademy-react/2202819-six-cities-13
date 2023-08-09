@@ -6,9 +6,9 @@ import {Review} from '../../types/review-types';
 import {Offer, DetailedOffer} from '../../types/offer-types';
 import Map from '../../components/map/map';
 import HeaderFull from '../../components/header/header-full';
+import OffersList from '../../components/offers-list/offers-list';
 import ReviewList from '../../components/review-list/review-list';
 import ReviewSendForm from '../../components/review-form/review-form';
-import OffersList from '../../components/offers-list/offers-list';
 
 const NEARBY_OFFERS_COUNT = 3;
 
