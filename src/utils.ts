@@ -1,4 +1,4 @@
-const getFormatDate = (date: string): string => {
+export const getFormatDate = (date: string): string => {
   const months = [
     'January',
     'February',
@@ -21,6 +21,4 @@ const getFormatDate = (date: string): string => {
   return `${currentDay < 10 ? '0' : ''}${currentDay} ${currentMonth}`;
 };
 
-const getDateTime = (date: string): string => date.split('T')[0];
-
-export {getFormatDate, getDateTime};
+export const getDateTime = (date: string): string => date.split('T')[0];
