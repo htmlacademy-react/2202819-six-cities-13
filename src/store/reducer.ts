@@ -1,20 +1,22 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {offers} from '../mocks/offers';
-import {Offer} from '../types/offer-types';
-import {changeCity, getSortedOffers, getFilteredOffers} from '../store/action';
+import {CityMap} from '../const';
+import {Offer, City} from '../types/offer-types';
+import {changeCity, getSortedOffers, getFilteredOffers, loadOffers, offersLoadingStatus} from '../store/action';
 
 type InitialState = {
-  city: string;
+  city: City;
   offers: Offer[];
   sortOffers: Offer[];
   filterOffers: Offer[];
+  loadingStatus: boolean;
 }
 
 const initialState: InitialState = {
-  city: 'Paris',
-  offers,
+  city: CityMap.Paris,
+  offers: [],
   sortOffers: [],
   filterOffers: [],
+  loadingStatus: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -23,7 +25,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.city = action.payload;
     })
     .addCase(getSortedOffers, (state, action) => {
-      state.sortOffers = state.offers.filter((item) => item.city.name === action.payload);
+      state.sortOffers = state.offers.filter((item) => item.city.name === action.payload.name);
     })
     .addCase(getFilteredOffers, (state, action) => {
       switch (action.payload) {
@@ -39,7 +41,12 @@ const reducer = createReducer(initialState, (builder) => {
         default:
           state.filterOffers = state.sortOffers;
       }
-      state.city = action.payload;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(offersLoadingStatus, (state, action) => {
+      state.loadingStatus = action.payload;
     });
 });
 

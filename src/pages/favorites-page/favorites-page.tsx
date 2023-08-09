@@ -1,5 +1,5 @@
 import {Helmet} from 'react-helmet-async';
-import {CITIES} from '../../const';
+import {CityMap} from '../../const';
 import {Offer} from '../../types/offer-types';
 import HeaderFull from '../../components/header/header-full';
 import OffersList from '../../components/offers-list/offers-list';
@@ -22,15 +22,15 @@ function FavoritesPage({offers}: FavoritesProps): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {CITIES.map((city) => {
-                const cityFavoriteOffers = favoriteOffers.filter((offer) => offer.city.name === city);
+              {Object.values(CityMap).map((city) => {
+                const cityFavoriteOffers = favoriteOffers.filter((offer) => offer.city.name === city.name);
                 return (
                   cityFavoriteOffers.length ?
-                    <li className="favorites__locations-items" key={city} >
+                    <li className="favorites__locations-items" key={city.name} >
                       <div className="favorites__locations locations locations--current">
                         <div className="locations__item">
                           <a className="locations__item-link" href="#">
-                            <span>{city}</span>
+                            <span>{city.name}</span>
                           </a>
                         </div>
                       </div>
