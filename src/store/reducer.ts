@@ -47,7 +47,7 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(offersLoadingStatus, (state, action) => {
       state.loadingStatus = action.payload;
-    })
+    });
 });
 
 export {reducer};
