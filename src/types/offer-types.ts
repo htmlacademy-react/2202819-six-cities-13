@@ -28,7 +28,7 @@ export type Offer = {
   previewImage: string;
 }
 
-export type DetailedOffer = Offer & {
+export type DetailOffer = Offer & {
   description: string;
   bedrooms: number;
   goods: string[];

@@ -1,6 +1,4 @@
 import {useState} from 'react';
-import {useAppDispatch} from '../../hooks';
-import {getFilteredOffers} from '../../store/action';
 import classNames from 'classnames';
 
 const filterList = [
@@ -22,11 +20,13 @@ const filterList = [
   },
 ];
 
-function PlaceSort() {
+type PlaceSortProps = {
+  onChange: (newSort: string) => void;
+}
+
+function PlaceSort({onChange}: PlaceSortProps) {
   const [active, setActive] = useState(false);
   const [currentFilter, setCurrenFilter] = useState('Popular');
-
-  const dispatch = useAppDispatch();
 
   const placeSortClass = classNames({
     'places__options': true,
@@ -57,7 +57,7 @@ function PlaceSort() {
               onClick={() => {
                 setCurrenFilter(item.name);
                 setActive((prev) => !prev);
-                dispatch(getFilteredOffers(item.type));
+                onChange(item.type);
               }}
             >{item.name}
             </li>
