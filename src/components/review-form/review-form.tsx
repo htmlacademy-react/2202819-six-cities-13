@@ -1,6 +1,10 @@
-import {useState, ChangeEvent, Fragment} from 'react';
+import {useState, useEffect, FormEvent, ChangeEvent, Fragment} from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {dropSendingStatus} from '../../store/action';
+import {postReview} from '../../store/api-actions';
+import {RequestStatus} from '../../const';
 
-const CommentLength = {MIN: 50, MAX: 200};
+const CommentLength = {MIN: 50, MAX: 300};
 
 const ratingMap = {
   '5': 'perfect',
@@ -10,9 +14,18 @@ const ratingMap = {
   '1': 'terribly',
 };
 
-function ReviewSendForm() {
+type ReviewSendFormProps = {
+  id: string;
+}
+
+function ReviewSendForm({id}: ReviewSendFormProps) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const sendingStatus = useAppSelector((state) => state.sendingReviewStatus);
+
   const isValid =
     comment.length >= CommentLength.MIN &&
     comment.length <= CommentLength.MAX &&
@@ -26,9 +39,32 @@ function ReviewSendForm() {
     setComment(evt.target.value);
   }
 
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(postReview({reviewData: {comment, rating: +rating}, id}));
+  };
+
+  useEffect(() => {
+    switch (sendingStatus) {
+      case RequestStatus.Success:
+        setComment('');
+        setRating('');
+        dispatch(dropSendingStatus());
+        break;
+      case RequestStatus.Pending:
+        setIsSubmitting(true);
+        break;
+      default:
+        setIsSubmitting(false);
+    }
+  }, [sendingStatus, dispatch]);
+
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
+
+      {sendingStatus === RequestStatus.Error &&
+        <p>Не удалось отправить комментарий, попробуйте еще раз!</p>}
 
       <div className="reviews__rating-form form__rating">
         {Object.entries(ratingMap)
@@ -45,12 +81,12 @@ function ReviewSendForm() {
           ))}
       </div>
 
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={comment} onChange={handleCommentChange}></textarea>
+      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={comment} disabled={isSubmitting} onChange={handleCommentChange}></textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{CommentLength.MIN}</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={!isValid}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={!isValid || isSubmitting}>Submit</button>
       </div>
     </form>
   );

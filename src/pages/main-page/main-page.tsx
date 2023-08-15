@@ -1,16 +1,23 @@
 import {useState} from 'react';
 import {useAppSelector} from '../../hooks';
+import {sorting} from '../../utils';
 import {Offer} from '../../types/offer-types';
 import MainEmptyPage from './main-empty-page';
+import Map from '../../components/map/map';
 import HeaderFull from '../../components/header/header-full';
 import CitiesList from '../../components/cities-list/cities-list';
 import OffersList from '../../components/offers-list/offers-list';
 import PlaceSort from '../../components/sort-options/sort-options';
-import Map from '../../components/map/map';
 
 function MainPage(): JSX.Element {
   const activeCity = useAppSelector((state) => state.city);
-  const sortOffers = useAppSelector((state) => state.sortOffers);
+  const offers = useAppSelector((state) => state.offers);
+
+  const sortOffers = offers
+    .slice()
+    .filter((item) => item.city.name === activeCity.name);
+
+  const [currentSort, setCurrentSort] = useState('popular');
 
   const [selectedPoint, setSelectedPoint] = useState<Offer | undefined>(
     undefined
@@ -44,8 +51,8 @@ function MainPage(): JSX.Element {
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{sortOffers.length} places to stay in {activeCity.name}</b>
-                <PlaceSort />
-                <OffersList type='cities' offers={sortOffers} onOfferCardHover={handleOfferCardHover}/>
+                <PlaceSort onChange={(newSort) => setCurrentSort(newSort)}/>
+                <OffersList type='cities' offers={sorting[currentSort](sortOffers)} onOfferCardHover={handleOfferCardHover}/>
               </section>
               <div className="cities__right-section">
                 <section className="cities__map map">

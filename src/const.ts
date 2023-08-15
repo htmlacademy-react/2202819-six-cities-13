@@ -21,6 +21,13 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum RequestStatus {
+  Unsent = 'UNSENT',
+  Pending = 'PENDING',
+  Success = 'SUCCESS',
+  Error = 'ERROR'
+}
+
 export enum CityName {
   Paris = 'Paris',
   Cologne = 'Cologne',

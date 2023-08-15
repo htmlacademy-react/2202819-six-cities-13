@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 import {useAppDispatch} from '../../hooks';
-import {changeCity, getSortedOffers} from '../../store/action';
+import {changeCity} from '../../store/action';
 import {CityMap} from '../../const';
 import classNames from 'classnames';
 
@@ -27,7 +27,6 @@ function CitiesList({activeCity}: CitiesListProps): JSX.Element {
               onClick={(evt) => {
                 evt.preventDefault();
                 dispatch(changeCity(city));
-                dispatch(getSortedOffers(city));
               }}
             >
               <span>{city.name}</span>
