@@ -2,10 +2,11 @@ import {Link} from 'react-router-dom';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {logoutAction} from '../../store/api-actions';
+import {getAuthorizationStatus} from '../../store/user-data/user-data.selectors';
 import HeaderLeft from './header-left';
 
 function HeaderFull(): JSX.Element {
-  const isAuthorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isAuthorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const dispatch = useAppDispatch();
 

@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {useAppSelector} from '../../hooks';
 import {sorting} from '../../utils';
 import {Offer} from '../../types/offer-types';
+import {getOffers, getActiveCity} from '../../store/offers-data/offers-data.selectors';
 import MainEmptyPage from './main-empty-page';
 import Map from '../../components/map/map';
 import HeaderFull from '../../components/header/header-full';
@@ -10,8 +11,8 @@ import OffersList from '../../components/offers-list/offers-list';
 import PlaceSort from '../../components/sort-options/sort-options';
 
 function MainPage(): JSX.Element {
-  const activeCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers);
+  const activeCity = useAppSelector(getActiveCity);
+  const offers = useAppSelector(getOffers);
 
   const sortOffers = offers
     .slice()
@@ -28,7 +29,7 @@ function MainPage(): JSX.Element {
       setSelectedPoint(undefined);
     }
 
-    const currentPoint = sortOffers.find((offer) => offer.id === id);
+    const currentPoint = sortOffers.find((sortOffer) => sortOffer.id === id);
 
     setSelectedPoint(currentPoint);
   };
@@ -62,18 +63,7 @@ function MainPage(): JSX.Element {
             </div>
           </div>
         </main>
-        :
-        <main className="page__main page__main--index page__main--index-empty">
-          <h1 className="visually-hidden">Cities</h1>
-          <div className="tabs">
-            <section className="locations container">
-              <CitiesList
-                activeCity={activeCity.name}
-              />
-            </section>
-          </div>
-          <MainEmptyPage />
-        </main>}
+        : <MainEmptyPage />}
     </div>
   );
 }

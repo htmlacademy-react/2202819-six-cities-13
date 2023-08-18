@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import {useAppDispatch} from '../../hooks';
-import {changeCity} from '../../store/action';
 import {CityMap} from '../../const';
+import {setActiveCity} from '../../store/offers-data/offers-data.slice';
 import classNames from 'classnames';
 
 type CitiesListProps = {
@@ -26,7 +26,7 @@ function CitiesList({activeCity}: CitiesListProps): JSX.Element {
               to="#"
               onClick={(evt) => {
                 evt.preventDefault();
-                dispatch(changeCity(city));
+                dispatch(setActiveCity(city));
               }}
             >
               <span>{city.name}</span>
