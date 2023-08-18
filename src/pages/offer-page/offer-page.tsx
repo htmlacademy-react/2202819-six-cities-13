@@ -1,12 +1,16 @@
 import {useState, useEffect} from 'react';
 import {Helmet} from 'react-helmet-async';
-import {useParams, Navigate} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {fetchOfferAction} from '../../store/api-actions';
-import {AuthorizationStatus} from '../../const';
+import {AuthorizationStatus, RequestStatus} from '../../const';
+import {fetchOfferAction, fetchReviewsAction, fetchOffersNearbyAction} from '../../store/api-actions';
 import {Offer} from '../../types/offer-types';
-import LoadingPage from '../loading-page/loading-page';
+import {getAuthorizationStatus} from '../../store/user-data/user-data.selectors';
+import {getOffer, getOfferFetchingStatus} from '../../store/offer-data/offer-data.selectors';
+import {getReviews} from '../../store/reviews-data/reviews-data.selectors';
+import {getOffersNearby} from '../../store/nearby-data/nearby-data.selectors';
 import Map from '../../components/map/map';
+import Loader from '../../components/loader/loader';
 import HeaderFull from '../../components/header/header-full';
 import OffersList from '../../components/offers-list/offers-list';
 import ReviewList from '../../components/review-list/review-list';
@@ -16,17 +20,19 @@ import DetailOffer from '../../components/detailed-offer/detailed-offer';
 
 function OfferPage(): JSX.Element {
   const params = useParams();
-  const reviews = useAppSelector((state) => state.reviews);
-  const offer = useAppSelector((state) => state.currentOffer);
-  const offersNearby = useAppSelector((state) => state.offersNearby);
-  const isAuthorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isDetailedOfferDataLoading = useAppSelector((state) => state.isDetailedOfferDataLoading);
+  const offer = useAppSelector(getOffer);
+  const reviews = useAppSelector(getReviews);
+  const offersNearby = useAppSelector(getOffersNearby);
+  const isAuthorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isDetailedOfferDataLoading = useAppSelector(getOfferFetchingStatus);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (params.id) {
       dispatch(fetchOfferAction(params.id));
+      dispatch(fetchReviewsAction(params.id));
+      dispatch(fetchOffersNearbyAction(params.id));
     }
   }, [dispatch, params.id]);
 
@@ -44,14 +50,10 @@ function OfferPage(): JSX.Element {
     setSelectedPoint(currentPoint);
   };
 
-  if (isDetailedOfferDataLoading){
+  if (isDetailedOfferDataLoading === RequestStatus.Pending){
     return (
-      <LoadingPage />
+      <Loader />
     );
-  }
-
-  if (!offer){
-    return <Navigate to='/Page404'></Navigate>;
   }
 
   return (
@@ -60,6 +62,7 @@ function OfferPage(): JSX.Element {
         <title>6 cities: Offer</title>
       </Helmet>
       <HeaderFull/>
+      {isDetailedOfferDataLoading === RequestStatus.Success && offer &&
       <main className="page__main page__main--offer">
         <section className="offer">
           <OfferGallery offer={offer} />
@@ -83,7 +86,7 @@ function OfferPage(): JSX.Element {
             <OffersList type='near-places' offers={offersNearby} onOfferCardHover={handleOfferCardHover}/>
           </section>
         </div>
-      </main>
+      </main>}
     </div>
   );
 }

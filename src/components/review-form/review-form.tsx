@@ -1,8 +1,9 @@
 import {useState, useEffect, FormEvent, ChangeEvent, Fragment} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {dropSendingStatus} from '../../store/action';
-import {postReview} from '../../store/api-actions';
 import {RequestStatus} from '../../const';
+import {Offer} from '../../types/offer-types';
+import {postReview} from '../../store/api-actions';
+import {getReviewSendingStatus} from '../../store/reviews-data/reviews-data.selectors';
 
 const CommentLength = {MIN: 50, MAX: 300};
 
@@ -15,7 +16,7 @@ const ratingMap = {
 };
 
 type ReviewSendFormProps = {
-  id: string;
+  id: Offer['id'];
 }
 
 function ReviewSendForm({id}: ReviewSendFormProps) {
@@ -24,7 +25,7 @@ function ReviewSendForm({id}: ReviewSendFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dispatch = useAppDispatch();
-  const sendingStatus = useAppSelector((state) => state.sendingReviewStatus);
+  const sendingStatus = useAppSelector(getReviewSendingStatus);
 
   const isValid =
     comment.length >= CommentLength.MIN &&
@@ -41,7 +42,7 @@ function ReviewSendForm({id}: ReviewSendFormProps) {
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    dispatch(postReview({reviewData: {comment, rating: +rating}, id}));
+    dispatch(postReview({reviewData: {comment, rating: Number(rating)}, id}));
   };
 
   useEffect(() => {
@@ -49,7 +50,6 @@ function ReviewSendForm({id}: ReviewSendFormProps) {
       case RequestStatus.Success:
         setComment('');
         setRating('');
-        dispatch(dropSendingStatus());
         break;
       case RequestStatus.Pending:
         setIsSubmitting(true);
