@@ -1,69 +1,50 @@
-import {useState} from 'react';
-import {useAppSelector} from '../../hooks';
-import {sorting} from '../../utils';
-import {Offer} from '../../types/offer-types';
+import {useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {AuthorizationStatus, RequestStatus} from '../../const';
+import {fetchOffersAction, fetchFavoritesAction} from '../../store/api-actions';
+import {getAuthorizationStatus} from '../../store/user-data/user-data.selectors';
+import {getOffersFetchingStatus} from '../../store/offers-data/offers-data.selectors';
 import {getOffers, getActiveCity} from '../../store/offers-data/offers-data.selectors';
-import MainEmptyPage from './main-empty-page';
-import Map from '../../components/map/map';
+import {CitiesListMemo as CitiesList} from '../../components/cities-list/cities-list';
 import HeaderFull from '../../components/header/header-full';
-import CitiesList from '../../components/cities-list/cities-list';
-import OffersList from '../../components/offers-list/offers-list';
-import PlaceSort from '../../components/sort-options/sort-options';
+import MainEmpty from '../../components/main-empty/main-empty';
+import Cities from '../../components/cities/cities';
+import Loader from '../../components/loader/loader';
+import classNames from 'classnames';
 
 function MainPage(): JSX.Element {
+  const isAuthorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isOffersDataLoading = useAppSelector(getOffersFetchingStatus);
   const activeCity = useAppSelector(getActiveCity);
   const offers = useAppSelector(getOffers);
+  const isEmpty = offers.length === 0;
 
-  const sortOffers = offers
-    .slice()
-    .filter((item) => item.city.name === activeCity.name);
+  const dispatch = useAppDispatch();
 
-  const [currentSort, setCurrentSort] = useState('popular');
+  useEffect(() => {
+    dispatch(fetchOffersAction());
+    dispatch(fetchFavoritesAction());
+  }, [dispatch]);
 
-  const [selectedPoint, setSelectedPoint] = useState<Offer | undefined>(
-    undefined
-  );
-
-  const handleOfferCardHover = (id: string | undefined) => {
-    if (!id) {
-      setSelectedPoint(undefined);
-    }
-
-    const currentPoint = sortOffers.find((sortOffer) => sortOffer.id === id);
-
-    setSelectedPoint(currentPoint);
-  };
+  if (isAuthorizationStatus === AuthorizationStatus.Unknown ||
+    isOffersDataLoading === RequestStatus.Pending) {
+    return (
+      <Loader/>
+    );
+  }
 
   return (
     <div className="page page--gray page--main">
       <HeaderFull/>
-      {sortOffers.length ?
-        <main className="page__main page__main--index">
-          <h1 className="visually-hidden">Cities</h1>
-          <div className="tabs">
-            <section className="locations container">
-              <CitiesList
-                activeCity={activeCity.name}
-              />
-            </section>
-          </div>
-          <div className="cities">
-            <div className="cities__places-container container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{sortOffers.length} places to stay in {activeCity.name}</b>
-                <PlaceSort onChange={(newSort) => setCurrentSort(newSort)}/>
-                <OffersList type='cities' offers={sorting[currentSort](sortOffers)} onOfferCardHover={handleOfferCardHover}/>
-              </section>
-              <div className="cities__right-section">
-                <section className="cities__map map">
-                  <Map city={activeCity} points={sortOffers} selectedPoint={selectedPoint} />
-                </section>
-              </div>
-            </div>
-          </div>
-        </main>
-        : <MainEmptyPage />}
+      <main
+        className={classNames({
+          'page__main page__main--index': true,
+          'page__main--index-empty': isEmpty,
+        })}
+      >
+        <CitiesList activeCity={activeCity.name}/>
+        {isEmpty ? <MainEmpty/> : <Cities offers={offers} activeCity={activeCity}/>}
+      </main>
     </div>
   );
 }

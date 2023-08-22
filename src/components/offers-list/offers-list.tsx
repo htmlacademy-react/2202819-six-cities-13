@@ -1,21 +1,15 @@
+import {memo} from 'react';
 import {Offer} from '../../types/offer-types';
-import OfferCard from '../offer-card/offer-card';
+import {OfferCardMemo as OfferCard} from '../offer-card/offer-card';
 import classNames from 'classnames';
 
 type OffersListProps = {
   offers: Offer[];
-  onOfferCardHover: (id: string | undefined) => void;
   type: 'cities' | 'near-places' | 'favorites';
+  onOfferCardHover: (id: string | undefined) => void;
 }
 
-function OffersList({offers, onOfferCardHover, type}: OffersListProps): JSX.Element {
-  const handleOfferCardHover = (id: string) => {
-    onOfferCardHover(id);
-  };
-
-  const handleOfferCardLeave = () => {
-    onOfferCardHover(undefined);
-  };
+function OffersList({offers, type, onOfferCardHover}: OffersListProps): JSX.Element {
 
   return (
     <div className={classNames(
@@ -23,10 +17,9 @@ function OffersList({offers, onOfferCardHover, type}: OffersListProps): JSX.Elem
       {'near-places__list places__list': type === 'near-places'},
       {'favorites__places': type === 'favorites'})}
     >
-      {offers.map((offer) => (<OfferCard key={offer.id} offer={offer} handleOfferCardHover={() => handleOfferCardHover(offer.id)} handleOfferCardLeave={() => handleOfferCardLeave()} type={type}/>)
-      )}
+      {offers.map((offer) => (<OfferCard type={type} key={offer.id} offer={offer} onOfferCardHover={onOfferCardHover}/>))}
     </div>
   );
 }
 
-export default OffersList;
+export const OffersListMemo = memo(OffersList);

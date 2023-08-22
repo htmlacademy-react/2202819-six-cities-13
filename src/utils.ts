@@ -1,10 +1,16 @@
-import {Offer} from './types/offer-types';
+import {City, Offer} from './types/offer-types';
 
 export const sorting: Record<string, (offers: Offer[]) => Offer[]> = {
   popular: (offers: Offer[]) => offers.slice(),
   high: (offers: Offer[]) => offers.slice().sort((a: Offer, b: Offer) => a.price - b.price),
   low: (offers: Offer[]) => offers.slice().sort((a: Offer, b: Offer) => b.price - a.price),
   top: (offers: Offer[]) => offers.slice().sort((a: Offer, b: Offer) => b.rating - a.rating),
+};
+
+export const getRandomCity = (obj: Record<string, City>) => {
+  const keys = Object.keys(obj);
+  const randomKey = keys[Math.floor(Math.random() * keys.length)];
+  return obj[randomKey];
 };
 
 export const getFormatDate = (date: string): string => {
@@ -24,10 +30,10 @@ export const getFormatDate = (date: string): string => {
   ];
 
   const currentDate = new Date(date);
-  const currentDay = currentDate.getDate();
   const currentMonth = months[currentDate.getMonth()];
+  const currentYear = currentDate.getFullYear();
 
-  return `${currentDay < 10 ? '0' : ''}${currentDay} ${currentMonth}`;
+  return `${currentMonth} ${currentYear}`;
 };
 
 export const getDateTime = (date: string): string => date.split('T')[0];

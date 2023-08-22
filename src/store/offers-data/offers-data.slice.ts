@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {NameSpace, RequestStatus, CityMap} from '../../const';
+import {RequestStatus, NameSpace, CityMap} from '../../const';
 import {City} from '../../types/offer-types';
 import {OffersData} from '../../types/state-types';
 import {fetchOffersAction} from '../api-actions';

@@ -1,4 +1,5 @@
-function Loader() {
+function Loader(): JSX.Element {
+
   return (
     <p>Loading...</p>
   );

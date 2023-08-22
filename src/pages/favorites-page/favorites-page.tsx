@@ -1,15 +1,32 @@
+import {useEffect} from 'react';
 import {Helmet} from 'react-helmet-async';
-import {CityMap} from '../../const';
-import {Offer} from '../../types/offer-types';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {RequestStatus} from '../../const';
+import {fetchFavoritesAction} from '../../store/api-actions';
+import {getFavorites, getFavoritesFetchingStatus} from '../../store/favorites-data/favorites-data.selectors';
+import Loader from '../../components/loader/loader';
 import HeaderFull from '../../components/header/header-full';
-import OffersList from '../../components/offers-list/offers-list';
+import FavoritesEmpty from '../../components/favorites-empty/favorites-empty';
+import FavoritesOffers from '../../components/favorites-offers/favorites-offers';
+import Footer from '../../components/footer/footer';
+import classNames from 'classnames';
 
-type FavoritesProps = {
-  offers: Offer[];
-}
+function FavoritesPage(): JSX.Element {
+  const favorites = useAppSelector(getFavorites);
+  const fetchingStatus = useAppSelector(getFavoritesFetchingStatus);
+  const isEmpty = favorites.length === 0;
 
-function FavoritesPage({offers}: FavoritesProps): JSX.Element {
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavoritesAction());
+  }, [dispatch]);
+
+  if (fetchingStatus === RequestStatus.Pending) {
+    return (
+      <Loader/>
+    );
+  }
 
   return (
     <div className="page">
@@ -17,36 +34,15 @@ function FavoritesPage({offers}: FavoritesProps): JSX.Element {
         <title>6 cities: Favorites</title>
       </Helmet>
       <HeaderFull/>
-      <main className="page__main page__main--favorites">
-        <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <ul className="favorites__list">
-              {Object.values(CityMap).map((city) => {
-                const cityFavoriteOffers = favoriteOffers.filter((offer) => offer.city.name === city.name);
-                return (
-                  cityFavoriteOffers.length ?
-                    <li className="favorites__locations-items" key={city.name} >
-                      <div className="favorites__locations locations locations--current">
-                        <div className="locations__item">
-                          <a className="locations__item-link" href="#">
-                            <span>{city.name}</span>
-                          </a>
-                        </div>
-                      </div>
-                      <OffersList offers={favoriteOffers} onOfferCardHover={() => ''} type='favorites'/>
-                    </li> : null
-                );
-              })}
-            </ul>
-          </section>
-        </div>
+      <main
+        className={classNames({
+          'page__main page__main--favorites': true,
+          'page__main--favorites-empty': isEmpty
+        })}
+      >
+        {isEmpty ? <FavoritesEmpty/> : <FavoritesOffers favorites={favorites}/>}
       </main>
-      <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
-          <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>
-        </a>
-      </footer>
+      <Footer/>
     </div>
   );
 }

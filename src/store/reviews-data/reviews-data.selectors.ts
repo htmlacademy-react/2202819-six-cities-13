@@ -1,6 +1,6 @@
 import {createSelector} from '@reduxjs/toolkit';
-import {ReviewsData, State} from '../../types/state-types';
 import {NameSpace} from '../../const';
+import {ReviewsData, State} from '../../types/state-types';
 
 export const getReviews = createSelector(
   (state: State) => state[NameSpace.Reviews],

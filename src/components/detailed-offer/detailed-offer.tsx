@@ -1,10 +1,14 @@
+import {useState} from 'react';
 import {DetailOffer} from '../../types/offer-types';
+import BookmarkButton from '../bookmark-button/bookmark-button';
 
 type DetailedOfferProps = {
   offer: DetailOffer;
 }
 
 function DetailedOffer({offer}: DetailedOfferProps): JSX.Element {
+  const [activeFavorite, setActiveFavorite] = useState(offer.isFavorite);
+
   return (
     <>
       {offer.isPremium &&
@@ -15,12 +19,7 @@ function DetailedOffer({offer}: DetailedOfferProps): JSX.Element {
         <h1 className="offer__name">
           {offer.title}
         </h1>
-        <button className="offer__bookmark-button button" type="button">
-          <svg className="offer__bookmark-icon" width="31" height="33">
-            <use xlinkHref="#icon-bookmark"></use>
-          </svg>
-          <span className="visually-hidden">To bookmarks</span>
-        </button>
+        <BookmarkButton id={offer.id} isDetailed isFavorite={activeFavorite} onClick={() => setActiveFavorite((prev) => !prev)}/>
       </div>
       <div className="offer__rating rating">
         <div className="offer__stars rating__stars">
@@ -34,10 +33,10 @@ function DetailedOffer({offer}: DetailedOfferProps): JSX.Element {
           {offer.type.charAt(0).toUpperCase() + offer.type.slice(1)}
         </li>
         <li className="offer__feature offer__feature--bedrooms">
-          {offer.bedrooms} Bedrooms
+          {offer.bedrooms} Bedroom{offer.bedrooms > 1 && 's'}
         </li>
         <li className="offer__feature offer__feature--adults">
-          Max {offer.maxAdults} adults
+          Max {offer.maxAdults} adult{offer.maxAdults > 1 && 's'}
         </li>
       </ul>
       <div className="offer__price">

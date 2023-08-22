@@ -1,12 +1,13 @@
 import {useRef, useEffect} from 'react';
 import {Icon, Marker, layerGroup} from 'leaflet';
-import {City, Offer} from '../../types/offer-types';
+import {City, Offer, DetailOffer} from '../../types/offer-types';
 import useMap from '../../hooks/use-map';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   city: City;
   points: Offer[];
+  detailedOffer: DetailOffer | undefined;
   selectedPoint: Offer | undefined;
 }
 
@@ -22,7 +23,7 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({city, points, selectedPoint}: MapProps): JSX.Element {
+function Map({city, points, detailedOffer, selectedPoint}: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -35,15 +36,22 @@ function Map({city, points, selectedPoint}: MapProps): JSX.Element {
           lat: point.location.latitude,
           lng: point.location.longitude
         });
-
         marker
           .setIcon(
-            selectedPoint && point.id === selectedPoint.id
+            !detailedOffer && selectedPoint && point.id === selectedPoint.id
               ? currentCustomIcon
               : defaultCustomIcon
           )
           .addTo(markerLayer);
       });
+
+      if (detailedOffer) {
+        const marker = new Marker({
+          lat: detailedOffer.location.latitude,
+          lng: detailedOffer.location.longitude,
+        });
+        marker.setIcon(currentCustomIcon).addTo(markerLayer);
+      }
 
       map.flyTo(
         [
@@ -57,7 +65,7 @@ function Map({city, points, selectedPoint}: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedPoint, city]);
+  }, [map, points, detailedOffer, selectedPoint, city]);
 
   return (
     <div style={{height: '100%', minHeight: '500px', width: '100%', maxWidth: '1144px', margin: '0 auto'}} ref={mapRef}></div>
