@@ -1,6 +1,6 @@
 import {createSelector} from '@reduxjs/toolkit';
-import {OffersData, State} from '../../types/state-types';
 import {NameSpace} from '../../const';
+import {OffersData, State} from '../../types/state-types';
 
 export const getOffers = createSelector(
   (state: State) => state[NameSpace.Offers],

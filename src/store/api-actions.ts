@@ -1,6 +1,6 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {AppRoute, APIRoute, NameSpace} from '../const';
+import {AppRoute, APIRoute, NameSpace, FavoriteStatus} from '../const';
 import {AuthData} from '../types/auth-data-types';
 import {AuthorizedUser} from '../types/user-data-types';
 import {AppDispatch, State} from '../types/state-types';
@@ -61,6 +61,45 @@ export const fetchOffersNearbyAction = createAsyncThunk<Offer[], Offer['id'], {
   }
 );
 
+export const fetchFavoritesAction = createAsyncThunk<Offer[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  `${NameSpace.Favorites}/fetchFavorites`,
+  async (_arg, {extra: api}) => {
+    const {data} = await api.get<Offer[]>(APIRoute.Favorite);
+
+    return data;
+  }
+);
+
+export const addFavorite = createAsyncThunk<Offer, Offer['id'], {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  `${NameSpace.Favorites}/addFavorite`,
+  async (id, {extra: api}) => {
+    const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${id}/${FavoriteStatus.Add}`);
+
+    return data;
+  }
+);
+
+export const deleteFavorite = createAsyncThunk<Offer, Offer['id'], {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  `${NameSpace.Favorites}/deleteFavorite`,
+  async (id, {extra: api}) => {
+    const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${id}/${FavoriteStatus.Delete}`);
+
+    return data;
+  }
+);
+
 export const postReview = createAsyncThunk<Review, {reviewData: ReviewData; id: Offer['id']}, {
   dispatch: AppDispatch;
   state: State;
@@ -93,12 +132,11 @@ export const loginAction = createAsyncThunk<AuthorizedUser, AuthData, {
   extra: AxiosInstance;
 }>(
   `${NameSpace.User}/login`,
-  async ({login: email, password}, {dispatch, extra: api}) => {
+  async ({login: email, password}, {extra: api}) => {
     const {data, status} = await api.post<AuthorizedUser>(APIRoute.Login, {email, password});
 
     if (status >= 200 && status < 300) {
       saveToken(data.token);
-      dispatch(redirectToRoute(AppRoute.Main));
     }
 
     return data;

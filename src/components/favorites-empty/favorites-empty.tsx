@@ -1,6 +1,6 @@
-const FavoritesEmptyPage = () => {
+function FavoritesEmpty(): JSX.Element {
 
-  <main className="page__main page__main--favorites page__main--favorites-empty">
+  return (
     <div className="page__favorites-container container">
       <section className="favorites favorites--empty">
         <h1 className="visually-hidden">Favorites (empty)</h1>
@@ -10,7 +10,7 @@ const FavoritesEmptyPage = () => {
         </div>
       </section>
     </div>
-  </main>;
-};
+  );
+}
 
-export default FavoritesEmptyPage;
+export default FavoritesEmpty;

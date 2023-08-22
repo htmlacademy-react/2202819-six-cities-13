@@ -1,8 +1,10 @@
 import {useState, useEffect, FormEvent, ChangeEvent, Fragment} from 'react';
+import {toast} from 'react-toastify';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {RequestStatus} from '../../const';
 import {Offer} from '../../types/offer-types';
 import {postReview} from '../../store/api-actions';
+import {dropReviewSendingStatus} from '../../store/reviews-data/reviews-data.slice';
 import {getReviewSendingStatus} from '../../store/reviews-data/reviews-data.selectors';
 
 const CommentLength = {MIN: 50, MAX: 300};
@@ -19,9 +21,9 @@ type ReviewSendFormProps = {
   id: Offer['id'];
 }
 
-function ReviewSendForm({id}: ReviewSendFormProps) {
-  const [comment, setComment] = useState('');
+function ReviewSendForm({id}: ReviewSendFormProps): JSX.Element {
   const [rating, setRating] = useState('');
+  const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -32,6 +34,11 @@ function ReviewSendForm({id}: ReviewSendFormProps) {
     comment.length <= CommentLength.MAX &&
     rating !== '';
 
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(postReview({reviewData: {comment, rating: Number(rating)}, id}));
+  };
+
   function handleRatingChange(evt: ChangeEvent<HTMLInputElement>) {
     setRating(evt.target.value);
   }
@@ -40,32 +47,36 @@ function ReviewSendForm({id}: ReviewSendFormProps) {
     setComment(evt.target.value);
   }
 
-  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    dispatch(postReview({reviewData: {comment, rating: Number(rating)}, id}));
-  };
-
   useEffect(() => {
-    switch (sendingStatus) {
-      case RequestStatus.Success:
-        setComment('');
-        setRating('');
-        break;
-      case RequestStatus.Pending:
-        setIsSubmitting(true);
-        break;
-      default:
-        setIsSubmitting(false);
+    let isMounted = true;
+
+    if (isMounted) {
+      switch (sendingStatus) {
+        case RequestStatus.Success:
+          setRating('');
+          setComment('');
+          dispatch(dropReviewSendingStatus());
+          break;
+        case RequestStatus.Pending:
+          setIsSubmitting(true);
+          break;
+        case RequestStatus.Error:
+          toast.warn('Комментарий не отправлен');
+          setIsSubmitting(false);
+          break;
+        default:
+          setIsSubmitting(false);
+      }
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [sendingStatus, dispatch]);
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-
-      {sendingStatus === RequestStatus.Error &&
-        <p>Не удалось отправить комментарий, попробуйте еще раз!</p>}
-
       <div className="reviews__rating-form form__rating">
         {Object.entries(ratingMap)
           .reverse()

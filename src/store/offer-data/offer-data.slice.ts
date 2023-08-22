@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {NameSpace, RequestStatus} from '../../const';
+import {RequestStatus, NameSpace} from '../../const';
 import {OfferData} from '../../types/state-types';
 import {fetchOfferAction} from '../api-actions';
 

@@ -1,11 +1,12 @@
-import {Review} from '../../types/review-types';
 import {getFormatDate, getDateTime} from '../../utils';
+import {Review} from '../../types/review-types';
 
 type ReviewCardProps = {
   review: Review;
 }
 
 function ReviewCard({review}: ReviewCardProps): JSX.Element {
+
   return (
     <li key={review.id} className="reviews__item">
       <div className="reviews__user user">

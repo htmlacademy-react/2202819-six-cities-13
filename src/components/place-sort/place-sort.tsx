@@ -1,7 +1,7 @@
-import {useState} from 'react';
+import {memo, useState} from 'react';
 import classNames from 'classnames';
 
-const filterList = [
+const filtersList = [
   {
     name: 'Popular',
     type: 'popular',
@@ -24,7 +24,7 @@ type PlaceSortProps = {
   onChange: (newSort: string) => void;
 }
 
-function PlaceSort({onChange}: PlaceSortProps) {
+function PlaceSort({onChange}: PlaceSortProps): JSX.Element {
   const [active, setActive] = useState(false);
   const [currentFilter, setCurrenFilter] = useState('Popular');
 
@@ -44,7 +44,7 @@ function PlaceSort({onChange}: PlaceSortProps) {
         </svg>
       </span>
       <ul className={placeSortClass}>
-        {filterList.map((item, i) => {
+        {filtersList.map((item, i) => {
           const keyValue = `${item.name}-${i}`;
           return (
             <li
@@ -68,4 +68,4 @@ function PlaceSort({onChange}: PlaceSortProps) {
   );
 }
 
-export default PlaceSort;
+export const PlaceSortMemo = memo(PlaceSort);

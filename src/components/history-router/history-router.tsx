@@ -3,12 +3,12 @@ import {Router} from 'react-router-dom';
 import type {BrowserHistory} from 'history';
 
 export interface HistoryRouterProps {
-  history: BrowserHistory;
   basename?: string;
+  history: BrowserHistory;
   children?: React.ReactNode;
 }
 
-function HistoryRouter({basename, children, history}: HistoryRouterProps) {
+function HistoryRouter({basename, history, children}: HistoryRouterProps) {
   const [state, setState] = useState({
     action: history.action,
     location: history.location,

@@ -47,6 +47,11 @@ export enum CityName {
   Dusseldorf ='Dusseldorf',
 }
 
+export enum FavoriteStatus {
+  Add = 1,
+  Delete = 0,
+}
+
 export const CityMap: Record<CityName, City> = {
   [CityName.Paris]: {
     name: CityName.Paris,
