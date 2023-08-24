@@ -82,7 +82,7 @@ function ReviewSendForm({id}: ReviewSendFormProps): JSX.Element {
           .reverse()
           .map(([score, title]) => (
             <Fragment key={score}>
-              <input className="form__rating-input visually-hidden" name="rating" value={score} id={`${score}-stars`} type="radio" checked={rating === score} onChange={handleRatingChange}/>
+              <input className="form__rating-input visually-hidden" name="rating" value={score} id={`${score}-stars`} type="radio" checked={rating === score} disabled={isSubmitting} onChange={handleRatingChange}/>
               <label htmlFor={`${score}-stars`} className="reviews__rating-label form__rating-label" title={title}>
                 <svg className="form__star-image" width="37" height="33">
                   <use xlinkHref="#icon-star"></use>

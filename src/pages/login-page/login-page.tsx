@@ -6,7 +6,7 @@ import {AppRoute, AuthorizationStatus, CityMap} from '../../const';
 import {getRandomCity} from '../../utils';
 import {setActiveCity} from '../../store/offers-data/offers-data.slice';
 import {getAuthorizationStatus} from '../../store/user-data/user-data.selectors';
-import HeaderLeft from '../../components/header/header-left';
+import Header from '../../components/header/header';
 import LoginForm from '../../components/login-form/login-form';
 
 function LoginPage(): JSX.Element {
@@ -32,13 +32,7 @@ function LoginPage(): JSX.Element {
       <Helmet>
         <title>6 cities: Login</title>
       </Helmet>
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <HeaderLeft/>
-          </div>
-        </div>
-      </header>
+      <Header isLogin/>
 
       <main className="page__main page__main--login">
         <div className="page__login-container container">

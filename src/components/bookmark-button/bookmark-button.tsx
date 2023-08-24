@@ -9,11 +9,12 @@ import classNames from 'classnames';
 type BookmarkButtonProps = {
   id: Offer['id'];
   isFavorite: Offer['isFavorite'];
+  type: string;
   isDetailed: boolean;
   onClick: () => void;
 }
 
-function BookmarkButton({id, isFavorite, isDetailed, onClick}: BookmarkButtonProps): JSX.Element {
+function BookmarkButton({id, isFavorite, type, isDetailed, onClick}: BookmarkButtonProps): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
@@ -33,14 +34,11 @@ function BookmarkButton({id, isFavorite, isDetailed, onClick}: BookmarkButtonPro
   };
 
   return (
-    <button className={classNames({
-      'place-card__bookmark-button button': true,
-      'place-card__bookmark-button--active': isFavorite
-    })}
-    type="button"
-    onClick={handleBookmarkButtonClick}
+    <button className={classNames(`${type}__bookmark-button`, 'button', {[`${type}__bookmark-button--active`]: isFavorite && authorizationStatus === AuthorizationStatus.Auth})}
+      type="button"
+      onClick={handleBookmarkButtonClick}
     >
-      <svg className="place-card__bookmark-icon" width={isDetailed ? 31 : 18} height={isDetailed ? 33 : 19}>
+      <svg className={classNames(`${type}__bookmark-icon`)} width={isDetailed ? 31 : 18} height={isDetailed ? 33 : 19}>
         <use xlinkHref="#icon-bookmark"></use>
       </svg>
       <span className="visually-hidden">To bookmarks</span>

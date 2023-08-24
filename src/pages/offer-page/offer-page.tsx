@@ -12,7 +12,7 @@ import {getOffersNearby} from '../../store/nearby-data/nearby-data.selectors';
 import {OffersListMemo as OffersList} from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import Loader from '../../components/loader/loader';
-import HeaderFull from '../../components/header/header-full';
+import Header from '../../components/header/header';
 import ReviewList from '../../components/review-list/review-list';
 import ReviewSendForm from '../../components/review-form/review-form';
 import OfferGallery from '../../components/offer-gallery/offer-gallery';
@@ -71,7 +71,7 @@ function OfferPage(): JSX.Element {
       <Helmet>
         <title>6 cities: Offer</title>
       </Helmet>
-      <HeaderFull/>
+      <Header/>
       {isDetailedOfferDataLoading === RequestStatus.Success && offer &&
       <main className="page__main page__main--offer">
         <section className="offer">

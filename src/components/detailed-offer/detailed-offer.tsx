@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {DetailOffer} from '../../types/offer-types';
 import BookmarkButton from '../bookmark-button/bookmark-button';
+import classNames from 'classnames';
 
 type DetailedOfferProps = {
   offer: DetailOffer;
@@ -19,14 +20,14 @@ function DetailedOffer({offer}: DetailedOfferProps): JSX.Element {
         <h1 className="offer__name">
           {offer.title}
         </h1>
-        <BookmarkButton id={offer.id} isDetailed isFavorite={activeFavorite} onClick={() => setActiveFavorite((prev) => !prev)}/>
+        <BookmarkButton id={offer.id} isFavorite={activeFavorite} type='offer' isDetailed onClick={() => setActiveFavorite((prev) => !prev)}/>
       </div>
       <div className="offer__rating rating">
         <div className="offer__stars rating__stars">
           <span style={{width: `${Math.round(offer.rating) * 100 / 5}%`}}></span>
           <span className="visually-hidden">Rating</span>
         </div>
-        <span className="offer__rating-value rating__value">{Math.round(offer.rating)}</span>
+        <span className="offer__rating-value rating__value">{offer.rating}</span>
       </div>
       <ul className="offer__features">
         <li className="offer__feature offer__feature--entire">
@@ -57,7 +58,7 @@ function DetailedOffer({offer}: DetailedOfferProps): JSX.Element {
       <div className="offer__host">
         <h2 className="offer__host-title">Meet the host</h2>
         <div className="offer__host-user user">
-          <div className={`offer__avatar-wrapper offer__avatar-wrapper${offer.host.isPro ? '--pro' : ''} user__avatar-wrapper`}>
+          <div className={classNames('offer__avatar-wrapper', {['offer__avatar-wrapper--pro']: offer.host.isPro}, 'user__avatar-wrapper')}>
             <img className="offer__avatar user__avatar" src={offer.host.avatarUrl} width="74" height="74" alt="Host avatar" />
           </div>
           <span className="offer__user-name">
