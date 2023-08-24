@@ -6,8 +6,3 @@ export const getOffersNearby = createSelector(
   (state: State) => state[NameSpace.NearPlaces],
   (state: NearbyData) => state.nearby,
 );
-
-export const getOffersNearbyFetchingStatus = createSelector(
-  (state: State) => state[NameSpace.NearPlaces],
-  (state: NearbyData) => state.fetchingStatusNearby,
-);
