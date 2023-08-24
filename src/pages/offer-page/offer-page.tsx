@@ -93,7 +93,7 @@ function OfferPage(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OffersList type='near-places' offers={threeOffersNearby} onOfferCardHover={handleOfferCardHover}/>
+            <OffersList offers={threeOffersNearby} type='near-places' onOfferCardHover={handleOfferCardHover}/>
           </section>
         </div>
       </main>}

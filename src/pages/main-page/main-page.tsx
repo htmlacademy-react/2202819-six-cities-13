@@ -41,7 +41,7 @@ function MainPage(): JSX.Element {
           'page__main--index-empty': isEmpty,
         })}
       >
-        <CitiesList activeCity={activeCity.name}/>
+        <CitiesList currentCity={activeCity.name}/>
         {isEmpty ? <MainEmpty/> : <Cities offers={offers} activeCity={activeCity}/>}
       </main>
     </div>

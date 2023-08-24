@@ -21,29 +21,29 @@ function App(): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainPage />}
+            element={<MainPage/>}
           />
           <Route
             path={AppRoute.Login}
-            element={<LoginPage />}
+            element={<LoginPage/>}
           />
           <Route path={AppRoute.Offer}>
             <Route
               path=':id'
-              element={<OfferPage />}
+              element={<OfferPage/>}
             />
           </Route>
           <Route
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={isAuthorizationStatus}>
-                <FavoritesPage />
+                <FavoritesPage/>
               </PrivateRoute>
             }
           />
           <Route
             path="*"
-            element={<NotFoundPage />}
+            element={<NotFoundPage/>}
           />
         </Routes>
       </HistoryRouter>

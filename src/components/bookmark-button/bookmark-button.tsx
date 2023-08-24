@@ -10,11 +10,11 @@ type BookmarkButtonProps = {
   id: Offer['id'];
   isFavorite: Offer['isFavorite'];
   type: string;
-  isDetailed: boolean;
+  isDetailed?: boolean;
   onClick: () => void;
 }
 
-function BookmarkButton({id, isFavorite, type, isDetailed, onClick}: BookmarkButtonProps): JSX.Element {
+function BookmarkButton({id, isFavorite, type, isDetailed = false, onClick}: BookmarkButtonProps): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);

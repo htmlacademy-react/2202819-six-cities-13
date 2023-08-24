@@ -41,12 +41,21 @@ function FavoritesPage(): JSX.Element {
   }
 
   return (
-    <div className={classNames('page', {['page--favorites-empty']: isEmpty})}>
+    <div className={classNames({
+      'page': true,
+      'page--favorites-empty': isEmpty,
+    })}
+    >
       <Helmet>
         <title>6 cities: Favorites</title>
       </Helmet>
       <Header/>
-      <main className={classNames('page__main', 'page__main--favorites', {['page__main--favorites-empty']: isEmpty})}>
+      <main className={classNames({
+        'page__main': true,
+        'page__main--favorites': true,
+        'page__main--favorites-empty': isEmpty
+      })}
+      >
         {isEmpty ? <FavoritesEmpty/> : <FavoritesOffers offers={Object.entries(favoriteByCity)}/>}
       </main>
       <Footer/>

@@ -6,10 +6,10 @@ import {setActiveCity} from '../../store/offers-data/offers-data.slice';
 import classNames from 'classnames';
 
 type CitiesListProps = {
-  activeCity: string;
+  currentCity: string;
 }
 
-function CitiesList({activeCity}: CitiesListProps): JSX.Element {
+function CitiesList({currentCity}: CitiesListProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   return (
@@ -25,7 +25,7 @@ function CitiesList({activeCity}: CitiesListProps): JSX.Element {
                   <Link className={classNames({
                     'locations__item-link': true,
                     'tabs__item': true,
-                    'tabs__item--active': activeCity === city.name
+                    'tabs__item--active': currentCity === city.name
                   })}
                   to="#"
                   onClick={(evt) => {
