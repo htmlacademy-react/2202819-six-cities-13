@@ -5,7 +5,7 @@ import {fetchOffersAction, fetchFavoritesAction} from '../../store/api-actions';
 import {getAuthorizationStatus} from '../../store/user-data/user-data.selectors';
 import {getOffers, getOffersFetchingStatus, getActiveCity} from '../../store/offers-data/offers-data.selectors';
 import {CitiesListMemo as CitiesList} from '../../components/cities-list/cities-list';
-import HeaderFull from '../../components/header/header-full';
+import Header from '../../components/header/header';
 import MainEmpty from '../../components/main-empty/main-empty';
 import Cities from '../../components/cities/cities';
 import Loader from '../../components/loader/loader';
@@ -34,7 +34,7 @@ function MainPage(): JSX.Element {
 
   return (
     <div className="page page--gray page--main">
-      <HeaderFull/>
+      <Header/>
       <main
         className={classNames({
           'page__main page__main--index': true,
