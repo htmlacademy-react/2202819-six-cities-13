@@ -38,7 +38,7 @@ function Map({city, points, detailedOffer, selectedPoint}: MapProps): JSX.Elemen
         });
         marker
           .setIcon(
-            !detailedOffer && selectedPoint && point.id === selectedPoint.id
+            selectedPoint && point.id === selectedPoint.id
               ? currentCustomIcon
               : defaultCustomIcon
           )

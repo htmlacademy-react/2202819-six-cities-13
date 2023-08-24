@@ -1,4 +1,4 @@
-import {useState, useCallback, useMemo} from 'react';
+import {useState, useMemo, useCallback} from 'react';
 import {sorting} from '../../utils';
 import {City, Offer} from '../../types/offer-types';
 import {PlaceSortMemo as PlaceSort} from '../place-sort/place-sort';
@@ -44,7 +44,7 @@ function Cities({offers, activeCity}: CitiesProps): JSX.Element {
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">{sortOffersByCity.length} place{sortOffersByCity.length > 1 && 's'} to stay in {activeCity.name}</b>
           <PlaceSort onChange={handleChangeSort}/>
-          <OffersList type='cities' offers={sortOffersByCategory} onOfferCardHover={handleOfferCardHover}/>
+          <OffersList offers={sortOffersByCategory} type='cities' onOfferCardHover={handleOfferCardHover}/>
         </section>
         <div className="cities__right-section">
           <section className="cities__map map">

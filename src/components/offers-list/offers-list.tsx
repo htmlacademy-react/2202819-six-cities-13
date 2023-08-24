@@ -18,7 +18,7 @@ function OffersList({offers, type, onOfferCardHover}: OffersListProps): JSX.Elem
 
   return (
     <div className={offersListClass}>
-      {offers.map((offer) => (<OfferCard key={offer.id} {...offer} onOfferCardHover={onOfferCardHover}/>))}
+      {offers.map((offer) => (<OfferCard key={offer.id} offer={offer} onOfferCardHover={onOfferCardHover}/>))}
     </div>
   );
 }

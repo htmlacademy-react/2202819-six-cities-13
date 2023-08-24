@@ -5,19 +5,18 @@ import {Offer} from '../../types/offer-types';
 import BookmarkButton from '../bookmark-button/bookmark-button';
 import classNames from 'classnames';
 
-type OfferCardProps = Offer & {
+type OfferCardProps = {
+  offer: Offer;
   favorite?: boolean;
   onOfferCardHover?: (id: string | undefined) => void;
 }
 
-function OfferCard(props: OfferCardProps): JSX.Element {
-  const {id, title, type, price, isFavorite, isPremium, rating, previewImage, favorite = false, onOfferCardHover} = props;
-
-  const [activeFavorite, setActiveFavorite] = useState(isFavorite);
+function OfferCard({offer, favorite = false, onOfferCardHover}: OfferCardProps): JSX.Element {
+  const [activeFavorite, setActiveFavorite] = useState(offer.isFavorite);
 
   const handleOfferCardHover = useCallback(() => {
-    onOfferCardHover?.(id);
-  }, [id , onOfferCardHover]);
+    onOfferCardHover?.(offer.id);
+  }, [offer.id , onOfferCardHover]);
 
   const handleOfferCardLeave = useCallback(() => {
     onOfferCardHover?.(undefined);
@@ -32,43 +31,44 @@ function OfferCard(props: OfferCardProps): JSX.Element {
     onMouseEnter={() => handleOfferCardHover()}
     onMouseLeave={() => handleOfferCardLeave()}
     >
-      {isPremium &&
+      {offer.isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>}
       <div className={classNames({
-        'place-card': true,
-        'cities__card': !favorite,
-        'favorites__card': favorite,
+        'place-card__image-wrapper': true,
+        'cities__image-wrapper': !favorite,
+        'favorites__image-wrapper': favorite,
       })}
       >
-        <Link to={`${AppRoute.Offer}/${id}`}>
-          <img className="place-card__image" src={previewImage} width={favorite ? 150 : 260} height={favorite ? 110 : 200} alt="Place image"/>
+        <Link to={`${AppRoute.Offer}/${offer.id}`}>
+          <img className="place-card__image" src={offer.previewImage} width={favorite ? 150 : 260} height={favorite ? 110 : 200} alt="Place image"/>
         </Link>
       </div>
-      <div className={classNames(
-        {'favorites__card-info': favorite},
-        'place-card__info')}
+      <div className={classNames({
+        'place-card__info': true,
+        'favorites__card-info': favorite,
+      })}
       >
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{price}</b>
+            <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <BookmarkButton type='place-card' id={id} isDetailed={false} isFavorite={activeFavorite} onClick={() => setActiveFavorite((prev) => !prev)}/>
+          <BookmarkButton id={offer.id} isFavorite={activeFavorite} type='place-card' onClick={() => setActiveFavorite((prev) => !prev)}/>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${Math.round(rating) * 100 / 5}%`}}></span>
+            <span style={{width: `${Math.round(offer.rating) * 100 / 5}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Offer}/${id}`}>
-            {title}
+          <Link to={`${AppRoute.Offer}/${offer.id}`}>
+            {offer.title}
           </Link>
         </h2>
-        <p className="place-card__type">{type.charAt(0).toUpperCase() + type.slice(1)}</p>
+        <p className="place-card__type">{offer.type.charAt(0).toUpperCase() + offer.type.slice(1)}</p>
       </div>
     </article>
   );
