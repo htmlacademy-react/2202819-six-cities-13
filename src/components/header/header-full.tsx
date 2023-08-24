@@ -2,9 +2,8 @@ import {Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {logoutAction} from '../../store/api-actions';
-import {getUser} from '../../store/user-data/user-data.selectors';
 import {getFavorites} from '../../store/favorites-data/favorites-data.selectors';
-import {getAuthorizationStatus} from '../../store/user-data/user-data.selectors';
+import {getUser, getAuthorizationStatus} from '../../store/user-data/user-data.selectors';
 import HeaderLeft from './header-left';
 
 function HeaderFull(): JSX.Element {
