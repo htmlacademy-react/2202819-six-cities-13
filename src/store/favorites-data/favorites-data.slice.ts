@@ -5,7 +5,7 @@ import {fetchFavoritesAction, addFavorite, deleteFavorite} from '../api-actions'
 
 const initialState: FavoritesData = {
   favorites: [],
-  fetchingStatusFavorites: RequestStatus.Unsent
+  fetchingStatusFavorites: RequestStatus.Unsent,
 };
 
 export const favoritesData = createSlice({

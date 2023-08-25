@@ -13,8 +13,8 @@ function FavoritesOffers({offers}: FavoritesOffersProps): JSX.Element {
       <section className="favorites">
         <h1 className="favorites__title">Saved listing</h1>
         <ul className="favorites__list">
-          {offers.map(([city, offersList], index) => {
-            const keyValue = `${city}-${index}`;
+          {offers.map(([city, offersList], i) => {
+            const keyValue = `${city}-${i}`;
             return (
               <li className="favorites__locations-items" key={keyValue}>
                 <div className="favorites__locations locations locations--current">
@@ -26,7 +26,7 @@ function FavoritesOffers({offers}: FavoritesOffersProps): JSX.Element {
                 </div>
                 <div className="favorites__places">
                   {offersList.map((offer) => (
-                    <OfferCard key={offer.id} offer={offer} favorite/>)
+                    <OfferCard key={offer.id} offer={offer} type='favorites'/>)
                   )}
                 </div>
               </li>

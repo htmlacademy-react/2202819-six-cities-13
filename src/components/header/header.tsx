@@ -5,7 +5,8 @@ type HeaderProps = {
   isLogin?: boolean;
 }
 
-function Header({isLogin = false}: HeaderProps) {
+function Header({isLogin = false}: HeaderProps): JSX.Element {
+
   return (
     <header className="header">
       <div className="container">

@@ -53,7 +53,7 @@ function FavoritesPage(): JSX.Element {
       <main className={classNames({
         'page__main': true,
         'page__main--favorites': true,
-        'page__main--favorites-empty': isEmpty
+        'page__main--favorites-empty': isEmpty,
       })}
       >
         {isEmpty ? <FavoritesEmpty/> : <FavoritesOffers offers={Object.entries(favoriteByCity)}/>}

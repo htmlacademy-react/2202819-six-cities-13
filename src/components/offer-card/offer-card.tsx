@@ -7,11 +7,11 @@ import classNames from 'classnames';
 
 type OfferCardProps = {
   offer: Offer;
-  favorite?: boolean;
+  type: 'cities' | 'near-places' | 'favorites';
   onOfferCardHover?: (id: string | undefined) => void;
 }
 
-function OfferCard({offer, favorite = false, onOfferCardHover}: OfferCardProps): JSX.Element {
+function OfferCard({offer, type, onOfferCardHover}: OfferCardProps): JSX.Element {
   const [activeFavorite, setActiveFavorite] = useState(offer.isFavorite);
 
   const handleOfferCardHover = useCallback(() => {
@@ -25,8 +25,9 @@ function OfferCard({offer, favorite = false, onOfferCardHover}: OfferCardProps):
   return (
     <article className={classNames({
       'place-card': true,
-      'cities__card': !favorite,
-      'favorites__card': favorite,
+      'cities__card': type === 'cities',
+      'near-places__card': type === 'near-places',
+      'favorites__card': type === 'favorites',
     })}
     onMouseEnter={() => handleOfferCardHover()}
     onMouseLeave={() => handleOfferCardLeave()}
@@ -37,17 +38,18 @@ function OfferCard({offer, favorite = false, onOfferCardHover}: OfferCardProps):
         </div>}
       <div className={classNames({
         'place-card__image-wrapper': true,
-        'cities__image-wrapper': !favorite,
-        'favorites__image-wrapper': favorite,
+        'cities__image-wrapper': type === 'cities',
+        'near-places__image-wrapper': type === 'near-places',
+        'favorites__image-wrapper': type === 'favorites',
       })}
       >
         <Link to={`${AppRoute.Offer}/${offer.id}`}>
-          <img className="place-card__image" src={offer.previewImage} width={favorite ? 150 : 260} height={favorite ? 110 : 200} alt="Place image"/>
+          <img className="place-card__image" src={offer.previewImage} width={type === 'favorites' ? 150 : 260} height={type === 'favorites' ? 110 : 200} alt="Place image"/>
         </Link>
       </div>
       <div className={classNames({
         'place-card__info': true,
-        'favorites__card-info': favorite,
+        'favorites__card-info': type === 'favorites',
       })}
       >
         <div className="place-card__price-wrapper">
