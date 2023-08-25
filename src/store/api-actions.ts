@@ -132,11 +132,12 @@ export const loginAction = createAsyncThunk<AuthorizedUser, AuthData, {
   extra: AxiosInstance;
 }>(
   `${NameSpace.User}/login`,
-  async ({login: email, password}, {extra: api}) => {
+  async ({login: email, password}, {dispatch, extra: api}) => {
     const {data, status} = await api.post<AuthorizedUser>(APIRoute.Login, {email, password});
 
     if (status >= 200 && status < 300) {
       saveToken(data.token);
+      dispatch(redirectToRoute(AppRoute.Main));
     }
 
     return data;
@@ -149,9 +150,8 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   `${NameSpace.User}/logout`,
-  async(_arg, {dispatch, extra: api}) => {
+  async(_arg, {extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
-    dispatch(redirectToRoute(AppRoute.Login));
   }
 );

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useCallback, useEffect} from 'react';
 import {Helmet} from 'react-helmet-async';
 import {useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../hooks';
@@ -37,7 +37,7 @@ function OfferPage(): JSX.Element {
     undefined
   );
 
-  const handleOfferCardHover = (id: string | undefined) => {
+  const handleOfferCardHover = useCallback((id: string | undefined) => {
     if (!id) {
       setSelectedPoint(undefined);
     }
@@ -45,7 +45,7 @@ function OfferPage(): JSX.Element {
     const currentPoint = offersNearby.find((offerNearby) => offerNearby.id === id);
 
     setSelectedPoint(currentPoint);
-  };
+  }, [offersNearby]);
 
   useEffect(() => {
     if (params.id) {
