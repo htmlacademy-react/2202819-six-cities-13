@@ -14,7 +14,7 @@ import Map from '../../components/map/map';
 import Loader from '../../components/loader/loader';
 import Header from '../../components/header/header';
 import ReviewList from '../../components/review-list/review-list';
-import ReviewSendForm from '../../components/review-form/review-form';
+import ReviewForm from '../../components/review-form/review-form';
 import OfferGallery from '../../components/offer-gallery/offer-gallery';
 import DetailOffer from '../../components/detailed-offer/detailed-offer';
 
@@ -82,7 +82,7 @@ function OfferPage(): JSX.Element {
               <section className="offer__reviews reviews">
                 <ReviewList reviews={reviews}/>
                 {isAuthorizationStatus === AuthorizationStatus.Auth &&
-                <ReviewSendForm id={params.id as string}/>}
+                <ReviewForm id={params.id as string}/>}
               </section>
             </div>
           </div>
