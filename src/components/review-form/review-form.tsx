@@ -17,11 +17,11 @@ const ratingMap = {
   '1': 'terribly',
 };
 
-type ReviewSendFormProps = {
+type ReviewFormProps = {
   id: Offer['id'];
 }
 
-function ReviewSendForm({id}: ReviewSendFormProps): JSX.Element {
+function ReviewForm({id}: ReviewFormProps): JSX.Element {
   const [rating, setRating] = useState('');
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -103,4 +103,4 @@ function ReviewSendForm({id}: ReviewSendFormProps): JSX.Element {
   );
 }
 
-export default ReviewSendForm;
+export default ReviewForm;
