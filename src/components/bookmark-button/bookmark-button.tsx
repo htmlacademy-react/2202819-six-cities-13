@@ -10,11 +10,10 @@ type BookmarkButtonProps = {
   id: Offer['id'];
   isFavorite: Offer['isFavorite'];
   type: string;
-  isDetailed?: boolean;
   onClick: () => void;
 }
 
-function BookmarkButton({id, isFavorite, type, isDetailed = false, onClick}: BookmarkButtonProps): JSX.Element {
+function BookmarkButton({id, isFavorite, type, onClick}: BookmarkButtonProps): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
@@ -38,7 +37,7 @@ function BookmarkButton({id, isFavorite, type, isDetailed = false, onClick}: Boo
       type="button"
       onClick={handleBookmarkButtonClick}
     >
-      <svg className={classNames(`${type}__bookmark-icon`)} width={isDetailed ? 31 : 18} height={isDetailed ? 33 : 19}>
+      <svg className={classNames(`${type}__bookmark-icon`)} width={type === 'offer' ? 31 : 18} height={type === 'offer' ? 33 : 19}>
         <use xlinkHref="#icon-bookmark"></use>
       </svg>
       <span className="visually-hidden">To bookmarks</span>

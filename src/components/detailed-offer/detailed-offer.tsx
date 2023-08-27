@@ -20,7 +20,7 @@ function DetailedOffer({offer}: DetailedOfferProps): JSX.Element {
         <h1 className="offer__name">
           {offer.title}
         </h1>
-        <BookmarkButton id={offer.id} isFavorite={activeFavorite} type='offer' isDetailed onClick={() => setActiveFavorite((prev) => !prev)}/>
+        <BookmarkButton id={offer.id} isFavorite={activeFavorite} type='offer' onClick={() => setActiveFavorite((prev) => !prev)}/>
       </div>
       <div className="offer__rating rating">
         <div className="offer__stars rating__stars">
